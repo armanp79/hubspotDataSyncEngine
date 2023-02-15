@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const retrieveContacts = require('../database/controllers/retrieveContacts.js');
 const sync = require('../database/controllers/sync.js');
+const userAccounts = require('./userAccounts.js');
 
 
 app.use(
@@ -30,10 +31,15 @@ app.get('/user/info/:name', (req, res) => {
 
 
 app.post('/sync', (req, res) => {
-    const userAccounts = require('./userAccounts.js');
     sync(userAccounts, res)
 })
 
+// Webhook example:
+// Listens for event, then will sync data of account
+// app.post('/webhook', (req, res) => {
+//     data = JSON.parse(req.body);
+//     sync(userAccounts[data.id], res)   
+// })
 
 app.listen(serverPort, err => {
     if (err) throw err;
